@@ -5,3 +5,4 @@ export const logout = "auth/logout";
 
 //action type for productReducer
 export const loading_toggle = "product/loading";
+export const add_Products = "product/addProducts";

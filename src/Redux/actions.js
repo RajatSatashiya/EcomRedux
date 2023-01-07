@@ -3,6 +3,7 @@ import {
   login_failure,
   logout,
   loading_toggle,
+  add_Products,
 } from "./actionTypes";
 
 export const loginUser = (token) => ({
@@ -16,4 +17,13 @@ export const logoutUser = () => ({
 
 export const loadingToggle = () => ({
   type: loading_toggle,
+});
+
+export const loginFailuer = () => ({
+  type: login_failure,
+});
+
+export const addProducts = (payload) => ({
+  type: add_Products,
+  payload,
 });

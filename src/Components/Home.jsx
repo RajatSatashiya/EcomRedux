@@ -1,11 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
-import { loadingToggle } from "../Redux/actions";
+import { loadingToggle, addProducts } from "../Redux/actions";
 
 function Home() {
-  const [products, setProducts] = useState([]);
   const history = useNavigate();
   const dispatch = useDispatch();
   const AuthState = useSelector(state => state.auth);
@@ -16,15 +15,14 @@ function Home() {
     try {
       dispatch(loadingToggle());
       const response = await fetch("https://fakestoreapi.com/products");
-      dispatch(loadingToggle());
       const data = await response.json();
-      setProducts(data);
+      dispatch(addProducts(data));
     } catch (e) {
       console.log(e);
     }
   };
 
-  const displayItems = products.map((item, index) => (
+  const displayItems = ProductState.products.map((item, index) => (
     <div key={index} className="product">
       <img src={item.image} alt={item.title} className="product-image" />
       <h3>{item.title}</h3>
