@@ -1,21 +1,26 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { loadingToggle } from "../Redux/actions";
+import {useSelector, useDispatch} from "react-redux";
+
 
 function Product() {
   const params = useParams();
   const [product, setProduct] = useState({});
   const history = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const AuthState = useSelector(state => state.auth);
+  const ProductState = useSelector(state => state.product);
 
   const getProducts = async () => {
     try {
-      setLoading(true);
+      dispatch(loadingToggle());
       const response = await fetch(
         `https://fakestoreapi.com/products/${params.id}`
       );
+      dispatch(loadingToggle());
       const data = await response.json();
-      setLoading(false);
       setProduct(data);
     } catch (e) {
       console.log(e);
@@ -24,10 +29,16 @@ function Product() {
 
   useEffect(() => {
     getProducts();
+    if (!AuthState.isAuth) {
+      history("/login")
+    }
   }, []);
+
+  if(ProductState.loading) {
+    return <h1>Loading...</h1>
+  }
   return (
     <>
-      <h1>{loading ? "Loading... " : ""}</h1>
       <div className="individual-product">
         <img
           src={product.image}
