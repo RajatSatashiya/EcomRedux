@@ -1,15 +1,13 @@
 import React from "react";
-import { useRef, useState, useContext, useEffect } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import {logoutUser} from "../Redux/actions"
 import "../Stylings/Navbar.css";
 
 function Navbar() {
   const history = useNavigate();
-  const authContext = useContext(AuthContext);
-  const state = useSelector(state => state);
-  console.log(state);
+  const state = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -18,6 +16,8 @@ function Navbar() {
           <Link to="/">
             <h3 className="project-title">HomePage</h3>
           </Link>
+
+          <div>Token: {state.token}</div>
           <ul className="nav-list">
             <li>
               <Link to="/login" className="llblink">
@@ -25,12 +25,12 @@ function Navbar() {
               </Link>
             </li>
 
-            <li>User Logged in: {authContext.isAuth ? "Yes" : "No"}</li>
+            <li>User Logged in: {state.isAuth ? "Yes" : "No"}</li>
             <li>
               <button
-                disabled={!authContext.isAuth}
+                disabled={!state.isAuth}
                 onClick={() => {
-                  authContext.logout();
+                  dispatch(logoutUser());
                   history("/login");
                 }}
               >

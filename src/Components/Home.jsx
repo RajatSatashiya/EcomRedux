@@ -1,13 +1,14 @@
 import React from "react";
-import { useRef, useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import {useSelector} from "react-redux";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const history = useNavigate();
-  const authContext = useContext(AuthContext);
+  const state = useSelector(state => state.auth);
+
 
   const getProducts = async () => {
     try {
@@ -31,7 +32,7 @@ function Home() {
 
   useEffect(() => {
     getProducts();
-    if (authContext.isAuth) {
+    if (state.isAuth) {
       history("/");
     } else {
       history("/login");

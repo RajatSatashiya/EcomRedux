@@ -1,12 +1,14 @@
-import { useRef, useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import { useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {loginUser} from "../Redux/actions";
+import {useDispatch, useSelector} from "react-redux";
 
 import React from "react";
 
 function Login() {
   const history = useNavigate();
-  const authContext = useContext(AuthContext);
+  const state = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -25,7 +27,7 @@ function Login() {
       });
 
       const data = await res.json();
-      authContext.toggleAuth(data.token);
+      dispatch(loginUser(data.token));
       data.token && history("/");
     } catch (e) {
       console.log("Error:" + e);
@@ -44,7 +46,7 @@ function Login() {
   };
 
   useEffect(() => {
-    if (authContext.isAuth) {
+    if (state.isAuth) {
       history("/");
     } else {
       history("/login");

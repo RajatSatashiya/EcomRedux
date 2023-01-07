@@ -1,14 +1,12 @@
 import React from "react";
-import { useRef, useState, useEffect, useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Product() {
   const params = useParams();
   const [product, setProduct] = useState({});
   const history = useNavigate();
   const [loading, setLoading] = useState(true);
-  const authContext = useContext(AuthContext);
 
   const getProducts = async () => {
     try {
